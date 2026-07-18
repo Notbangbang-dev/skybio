@@ -44,6 +44,13 @@ if [ -n "$CUR_DOMAIN" ] && ! echo "$CUR_DOMAIN" | grep -Eq '(your-domain\.com|ex
   sed -i "s|^NEXT_PUBLIC_APP_URL=.*|NEXT_PUBLIC_APP_URL=\"https://${CUR_DOMAIN}\"|" .env
 fi
 
+# We ran as root and edited .env with `sed -i`, which leaves it root-owned — so
+# `nano .env` as the normal user would fail with "Permission denied". Hand it
+# back to the invoking user so they can edit it without sudo.
+if [ -n "${SUDO_USER:-}" ]; then
+  chown "${SUDO_USER}:${SUDO_USER}" .env 2>/dev/null || true
+fi
+
 # Gate on values only YOU can supply.
 missing=""
 grep -Eq 'DOMAIN="?(your-domain\.com|example\.com)"?' .env       && missing="$missing DOMAIN"
