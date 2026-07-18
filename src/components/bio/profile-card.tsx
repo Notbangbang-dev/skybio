@@ -5,7 +5,8 @@ import { Eye, MapPin } from "lucide-react";
 import { NameEffect } from "./name-effect";
 import { SocialLinks } from "./social-links";
 import { DiscordActivity } from "./discord-activity";
-import { useLanyard, STATUS_META } from "@/lib/use-lanyard";
+import { StatusDot } from "./status-dot";
+import { useLanyard, STATUS_META, type DiscordStatus } from "@/lib/use-lanyard";
 import type { BioProfile, BioSocial } from "./types";
 
 /** The centerpiece: glass card with a glowing avatar (+ live Discord status),
@@ -70,10 +71,7 @@ export function ProfileCard({
           {p.discordEnabled && presence && (
             <span className="inline-flex items-center gap-1.5">
               ·
-              <span
-                className="h-2 w-2 rounded-full"
-                style={{ background: STATUS_META[presence.status].color }}
-              />
+              <StatusDot status={presence.status} size={12} />
               {STATUS_META[presence.status].label}
             </span>
           )}
@@ -201,22 +199,22 @@ function Avatar({ p, status }: { p: BioProfile; status: string | null }) {
         )}
       </span>
 
-      {/* live status dot */}
-      {statusColor && (
+      {/* live status indicator (Discord-shaped) with a bg-color halo ring */}
+      {status && statusColor && (
         <span
-          className="absolute rounded-full"
+          className="absolute grid place-items-center rounded-full"
           style={{
-            height: dot,
-            width: dot,
-            right: "6%",
-            bottom: "6%",
-            background: statusColor,
-            border: "3px solid var(--bg-color)",
+            right: "4%",
+            bottom: "4%",
+            padding: Math.round(dot * 0.22),
+            background: "var(--bg-color)",
             boxShadow: `0 0 10px ${statusColor}`,
           }}
-          title={status ?? undefined}
+          title={status}
           aria-label={`Discord: ${status}`}
-        />
+        >
+          <StatusDot status={status as DiscordStatus} size={dot} />
+        </span>
       )}
     </div>
   );
