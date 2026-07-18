@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 /** Renders the display name with the owner-selected effect. */
 export function NameEffect({ name, effect }: { name: string; effect: string }) {
-  const base = "font-display text-4xl font-extrabold tracking-tight sm:text-5xl";
+  const base = "font-display text-3xl font-extrabold leading-tight tracking-tight break-words sm:text-5xl";
 
   if (effect === "glitch") {
     return (

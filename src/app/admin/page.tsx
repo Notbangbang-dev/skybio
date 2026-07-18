@@ -70,6 +70,17 @@ export default async function AdminPage() {
       metaDescription: profile.metaDescription,
       faviconUrl: profile.faviconUrl ?? "",
       embedColor: profile.embedColor,
+      donateEnabled: profile.donateEnabled,
+      donateTitle: profile.donateTitle,
+      donateText: profile.donateText,
+      donateCurrency: profile.donateCurrency,
+      donatePresets: profile.donatePresets,
+      cashappTag: profile.cashappTag,
+      paypalUser: profile.paypalUser,
+      venmoUser: profile.venmoUser,
+      kofiUrl: profile.kofiUrl,
+      cryptoBtc: profile.cryptoBtc,
+      cryptoEth: profile.cryptoEth,
       showViews: profile.showViews,
       badges: profile.badges,
     },
@@ -98,7 +109,7 @@ export default async function AdminPage() {
             </span>
             <div>
               <p className="font-display text-sm font-bold leading-none">skybio admin</p>
-              <p className="text-[11px] text-muted">signed in as {owner.name ?? owner.email ?? "owner"}</p>
+              <p className="hidden text-[11px] text-muted sm:block">signed in as {owner.name ?? owner.email ?? "owner"}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -107,7 +118,7 @@ export default async function AdminPage() {
               target="_blank"
               className="press inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-sm hover:bg-panel-2"
             >
-              <ExternalLink className="h-4 w-4" /> View bio
+              <ExternalLink className="h-4 w-4" /> <span className="hidden sm:inline">View bio</span>
             </Link>
             <form
               action={async () => {
@@ -116,7 +127,7 @@ export default async function AdminPage() {
               }}
             >
               <button className="press inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-sm text-muted hover:bg-panel-2">
-                <LogOut className="h-4 w-4" /> Sign out
+                <LogOut className="h-4 w-4" /> <span className="hidden sm:inline">Sign out</span>
               </button>
             </form>
           </div>

@@ -30,6 +30,9 @@ own VPS with the same one-command Docker + nginx + Let's Encrypt flow.
 - **Socials** — add/remove links shown as **magnetic** icons (Discord, GitHub,
   Twitter/X, Instagram, YouTube, TikTok, Spotify, Twitch, Telegram, email, website,
   or custom).
+- **Donations** — an optional **`/donate` page** (+ a Donate button on the bio) where
+  visitors send **any custom amount** via Cash App, PayPal, Venmo (amount pre-filled
+  into the link), Ko-fi, or crypto (copyable address). No payment backend required.
 - **Meta / embeds** — page title, link-preview description, theme/embed color,
   favicon, and a view counter.
 

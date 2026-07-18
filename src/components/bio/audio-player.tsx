@@ -135,7 +135,7 @@ export function AudioPlayer({
   if (!p.musicEnabled || tracks.length === 0) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-5 z-50 flex justify-center px-4">
+    <div className="fixed inset-x-0 bottom-4 z-50 flex justify-center px-3 sm:bottom-5 sm:px-4">
       <div
         className="glass animate-fade-up flex w-full max-w-md items-center gap-3 rounded-2xl p-2.5 pr-4"
         style={{ animationDelay: "0.5s" }}

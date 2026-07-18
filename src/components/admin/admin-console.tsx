@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast, Toaster } from "sonner";
 import {
   User, Palette, Image as ImageIcon, Sparkles, Music, Link2, Globe,
-  Save, Upload, Trash2, Plus, Loader2, MessageCircle,
+  Save, Upload, Trash2, Plus, Loader2, MessageCircle, Heart,
 } from "lucide-react";
 import {
   saveProfile, addTrack, updateTrack, deleteTrack,
@@ -28,6 +28,7 @@ const TABS = [
   { key: "effects", label: "Effects", icon: Sparkles },
   { key: "music", label: "Music", icon: Music },
   { key: "socials", label: "Socials", icon: Link2 },
+  { key: "donate", label: "Donate", icon: Heart },
   { key: "meta", label: "Meta", icon: Globe },
 ] as const;
 
@@ -225,6 +226,34 @@ export function AdminConsole({ data }: { data: AdminData }) {
       {tab === "socials" && (
         <Section title="Socials" desc="Your links, shown as magnetic icons.">
           <SocialManager socials={data.socials} />
+        </Section>
+      )}
+
+      {tab === "donate" && (
+        <Section title="Donations" desc="Let visitors send you any custom amount. Link-based — no payment setup needed.">
+          <Toggle
+            label="Enable donations (adds a Donate button + /donate page)"
+            checked={form.donateEnabled}
+            onChange={(v) => set("donateEnabled", v)}
+          />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Text label="Title" value={form.donateTitle} onChange={(v) => set("donateTitle", v)} />
+            <Text label="Currency symbol" value={form.donateCurrency} onChange={(v) => set("donateCurrency", v)} placeholder="$" />
+          </div>
+          <Area label="Description" value={form.donateText} onChange={(v) => set("donateText", v)} rows={2} />
+          <Text label="Preset amounts (comma separated)" value={form.donatePresets} onChange={(v) => set("donatePresets", v)} placeholder="5,10,25,50" />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Text label="Cash App tag (no $)" value={form.cashappTag} onChange={(v) => set("cashappTag", v)} placeholder="yourtag" mono />
+            <Text label="PayPal.me username" value={form.paypalUser} onChange={(v) => set("paypalUser", v)} placeholder="yourname" mono />
+            <Text label="Venmo username" value={form.venmoUser} onChange={(v) => set("venmoUser", v)} placeholder="yourname" mono />
+            <Text label="Ko-fi URL" value={form.kofiUrl} onChange={(v) => set("kofiUrl", v)} placeholder="https://ko-fi.com/you" />
+            <Text label="Bitcoin address" value={form.cryptoBtc} onChange={(v) => set("cryptoBtc", v)} mono />
+            <Text label="Ethereum address" value={form.cryptoEth} onChange={(v) => set("cryptoEth", v)} mono />
+          </div>
+          <p className="text-xs text-muted">
+            Cash App, PayPal &amp; Venmo prefill the amount the visitor picks. Ko-fi links to your page;
+            crypto shows a copyable address.
+          </p>
         </Section>
       )}
 

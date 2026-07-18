@@ -74,7 +74,7 @@ export function BioExperience({
       {p.effectGrain && <div className="grain-overlay" aria-hidden />}
 
       {/* Center stage */}
-      <div className="relative z-10 grid min-h-screen place-items-center px-4 py-16">
+      <div className="relative z-10 grid min-h-screen place-items-center px-4 py-10 sm:py-16">
         <div className="relative">
           {p.glowBehindCard && (
             <div

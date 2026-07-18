@@ -59,6 +59,7 @@ export default async function BioPage() {
     volume: profile.volume,
     showVisualizer: profile.showVisualizer,
     loopTracks: profile.loopTracks,
+    donateEnabled: profile.donateEnabled,
     showViews: profile.showViews,
     views: profile.views,
     badges: profile.badges,

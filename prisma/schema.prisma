@@ -137,6 +137,19 @@ model Profile {
   faviconUrl      String?
   embedColor      String  @default("#8b5cf6")
 
+  // Donations (link-based — custom amount prefilled into the payment URL)
+  donateEnabled  Boolean @default(false)
+  donateTitle    String  @default("Support me")
+  donateText     String  @default("Every bit helps — thank you 💜") @db.Text
+  donateCurrency String  @default("$")
+  donatePresets  String  @default("5,10,25,50")
+  cashappTag     String  @default("") // without the leading $
+  paypalUser     String  @default("") // paypal.me username
+  venmoUser      String  @default("")
+  kofiUrl        String  @default("")
+  cryptoBtc      String  @default("")
+  cryptoEth      String  @default("")
+
   // Misc
   showViews Boolean  @default(true)
   views     Int      @default(0)

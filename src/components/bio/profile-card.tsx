@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { Eye, MapPin } from "lucide-react";
+import { Eye, MapPin, Heart } from "lucide-react";
 import { NameEffect } from "./name-effect";
 import { SocialLinks } from "./social-links";
 import { DiscordActivity } from "./discord-activity";
@@ -41,7 +41,7 @@ export function ProfileCard({
       ref={ref}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
-      className="glass animate-scale-in relative w-full rounded-[var(--radius)] p-8 transition-transform duration-200 ease-out will-change-transform"
+      className="glass animate-scale-in relative w-full rounded-[var(--radius)] p-6 transition-transform duration-200 ease-out will-change-transform sm:p-8"
       style={{
         maxWidth: p.cardWidth,
         borderColor: "color-mix(in srgb, var(--accent) 28%, transparent)",
@@ -117,6 +117,20 @@ export function ProfileCard({
         <div className="mt-6">
           <SocialLinks socials={socials} />
         </div>
+
+        {/* Donate CTA */}
+        {p.donateEnabled && (
+          <a
+            href="/donate"
+            className="press mt-5 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-white"
+            style={{
+              background: "linear-gradient(120deg, var(--accent), var(--accent-2))",
+              boxShadow: "0 10px 30px -10px var(--accent)",
+            }}
+          >
+            <Heart className="h-4 w-4" /> Donate
+          </a>
+        )}
 
         {/* Views + footer */}
         {(p.showViews || p.footerText) && (

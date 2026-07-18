@@ -54,6 +54,8 @@ export interface BioProfile {
   showVisualizer: boolean;
   loopTracks: boolean;
 
+  donateEnabled: boolean;
+
   showViews: boolean;
   views: number;
   badges: string[];

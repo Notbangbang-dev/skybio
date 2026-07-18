@@ -29,6 +29,14 @@ function str(v: unknown, max: number): string {
 function int(v: unknown, min: number, max: number): number {
   return Math.round(clamp(v, min, max));
 }
+/** Sanitize a payment handle/username to URL-safe chars (strips $, spaces, etc.). */
+function handle(v: unknown, max: number): string {
+  return String(v ?? "").trim().replace(/[^A-Za-z0-9_.\-]/g, "").slice(0, max);
+}
+/** Crypto addresses: alphanumeric only. */
+function alnum(v: unknown, max: number): string {
+  return String(v ?? "").trim().replace(/[^A-Za-z0-9]/g, "").slice(0, max);
+}
 /** Only allow safe URLs: same-origin paths, http(s), or mailto. Blocks javascript:. */
 function safeUrl(v: unknown): string {
   const s = String(v ?? "").trim();
@@ -96,6 +104,17 @@ export interface ProfileInput {
   metaDescription: string;
   faviconUrl: string;
   embedColor: string;
+  donateEnabled: boolean;
+  donateTitle: string;
+  donateText: string;
+  donateCurrency: string;
+  donatePresets: string;
+  cashappTag: string;
+  paypalUser: string;
+  venmoUser: string;
+  kofiUrl: string;
+  cryptoBtc: string;
+  cryptoEth: string;
   showViews: boolean;
   badges: string[];
 }
@@ -159,6 +178,17 @@ export async function saveProfile(input: ProfileInput): Promise<Result> {
       metaDescription: str(input.metaDescription, 300),
       faviconUrl: safeUrl(input.faviconUrl) || null,
       embedColor: hex(input.embedColor, "#8b5cf6"),
+      donateEnabled: Boolean(input.donateEnabled),
+      donateTitle: str(input.donateTitle, 60) || "Support me",
+      donateText: str(input.donateText, 300),
+      donateCurrency: str(input.donateCurrency, 4) || "$",
+      donatePresets: String(input.donatePresets ?? "").replace(/[^0-9.,]/g, "").slice(0, 60) || "5,10,25,50",
+      cashappTag: handle(input.cashappTag, 40),
+      paypalUser: handle(input.paypalUser, 60),
+      venmoUser: handle(input.venmoUser, 60),
+      kofiUrl: safeUrl(input.kofiUrl),
+      cryptoBtc: alnum(input.cryptoBtc, 120),
+      cryptoEth: alnum(input.cryptoEth, 120),
       showViews: Boolean(input.showViews),
       badges: (Array.isArray(input.badges) ? input.badges : [])
         .map((b) => str(b, 24))
