@@ -26,7 +26,8 @@ const nextConfig = {
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com data:",
       "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-      "connect-src 'self'",
+      // Lanyard powers live Discord presence (fetched from the browser).
+      "connect-src 'self' https://api.lanyard.rest wss://api.lanyard.rest",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "object-src 'none'",

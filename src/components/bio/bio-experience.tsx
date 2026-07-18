@@ -8,6 +8,7 @@ import { CursorTrail } from "./cursor-trail";
 import { Splash } from "./splash";
 import { ProfileCard } from "./profile-card";
 import { AudioPlayer } from "./audio-player";
+import { Confetti } from "./confetti";
 import type { BioProfile, BioTrack, BioSocial } from "./types";
 
 function themeStyle(p: BioProfile): React.CSSProperties {
@@ -74,10 +75,24 @@ export function BioExperience({
 
       {/* Center stage */}
       <div className="relative z-10 grid min-h-screen place-items-center px-4 py-16">
-        <ProfileCard p={p} socials={socials} views={views} />
+        <div className="relative">
+          {p.glowBehindCard && (
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -inset-16 -z-[1] rounded-full blur-3xl"
+              style={{
+                background:
+                  "radial-gradient(circle, color-mix(in srgb, var(--accent) 35%, transparent), transparent 70%)",
+                opacity: 0.6,
+              }}
+            />
+          )}
+          <ProfileCard p={p} socials={socials} views={views} />
+        </div>
       </div>
 
       {entered && <AudioPlayer tracks={tracks} p={p} active={entered} />}
+      {entered && p.effectConfetti && <Confetti colors={[p.accent, p.accent2, "#ffffff"]} />}
 
       {!entered && p.splashEnabled && <Splash p={p} onEnter={handleEnter} />}
     </main>

@@ -16,8 +16,11 @@ own VPS with the same one-command Docker + nginx + Let's Encrypt flow.
   solid color. Control brightness, blur, and a darkening overlay for legibility.
 - **Music** — upload multiple tracks; a floating player with a **live Web-Audio
   visualizer**, autoplay-on-enter, volume, and loop.
-- **Identity** — avatar (with glow / rotating-ring / pulse styles), display name,
-  handle, pronouns, location, a multi-line bio, and badges.
+- **Identity** — avatar (with glow / rotating-ring / pulse styles + size), display
+  name, handle, pronouns, location, a multi-line bio, and badges.
+- **Live Discord presence** — an online / idle / dnd / offline dot on your avatar
+  plus what you're doing (Spotify with album art, a game, or your custom status),
+  updated live via **Lanyard** (join `discord.gg/lanyard` to be tracked).
 - **Look** — accent colors, text color, base color, display + body fonts (7
   distinctive Google fonts), corner radius, and the glass card's opacity + blur.
 - **Name effect** — shine, glitch, typewriter, or plain.

@@ -26,6 +26,9 @@ function oneOf(v: unknown, list: readonly string[], fallback: string): string {
 function str(v: unknown, max: number): string {
   return String(v ?? "").slice(0, max);
 }
+function int(v: unknown, min: number, max: number): number {
+  return Math.round(clamp(v, min, max));
+}
 /** Only allow safe URLs: same-origin paths, http(s), or mailto. Blocks javascript:. */
 function safeUrl(v: unknown): string {
   const s = String(v ?? "").trim();
@@ -48,8 +51,12 @@ export interface ProfileInput {
   bio: string;
   avatarUrl: string;
   avatarStyle: string;
+  avatarSize: number;
   location: string;
   pronouns: string;
+  discordEnabled: boolean;
+  discordUserId: string;
+  discordShowActivity: boolean;
   bgType: string;
   bgUrl: string;
   bgColor: string;
@@ -64,6 +71,11 @@ export interface ProfileInput {
   radius: number;
   cardOpacity: number;
   cardBlur: number;
+  cardWidth: number;
+  overlayColor: string;
+  glowBehindCard: boolean;
+  effectConfetti: boolean;
+  footerText: string;
   nameEffect: string;
   effectParticles: boolean;
   effectStars: boolean;
@@ -101,8 +113,13 @@ export async function saveProfile(input: ProfileInput): Promise<Result> {
       bio: str(input.bio, 1000),
       avatarUrl: safeUrl(input.avatarUrl) || null,
       avatarStyle: oneOf(input.avatarStyle, AVATAR_STYLES, "glow"),
+      avatarSize: int(input.avatarSize, 64, 200),
       location: str(input.location, 60),
       pronouns: str(input.pronouns, 40),
+      // Discord snowflakes are numeric; strip anything else.
+      discordEnabled: Boolean(input.discordEnabled),
+      discordUserId: String(input.discordUserId ?? "").replace(/[^0-9]/g, "").slice(0, 24),
+      discordShowActivity: Boolean(input.discordShowActivity),
       bgType: oneOf(input.bgType, BG_TYPES, "gradient"),
       bgUrl: safeUrl(input.bgUrl) || null,
       bgColor: hex(input.bgColor, "#05060a"),
@@ -117,6 +134,11 @@ export async function saveProfile(input: ProfileInput): Promise<Result> {
       radius: clamp(input.radius, 0, 60),
       cardOpacity: clamp(input.cardOpacity, 0, 100),
       cardBlur: clamp(input.cardBlur, 0, 60),
+      cardWidth: int(input.cardWidth, 320, 640),
+      overlayColor: hex(input.overlayColor, "#000000"),
+      glowBehindCard: Boolean(input.glowBehindCard),
+      effectConfetti: Boolean(input.effectConfetti),
+      footerText: str(input.footerText, 120),
       nameEffect: oneOf(input.nameEffect, NAME_EFFECTS, "shine"),
       effectParticles: Boolean(input.effectParticles),
       effectStars: Boolean(input.effectStars),

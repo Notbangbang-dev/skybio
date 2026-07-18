@@ -45,10 +45,10 @@ export function Background({ p }: { p: BioProfile }) {
         />
       )}
 
-      {/* Dark scrim for legibility */}
+      {/* Scrim for legibility (color + opacity are owner-configurable) */}
       <div
         className="absolute inset-0"
-        style={{ background: "#000", opacity: p.bgOverlay / 100 }}
+        style={{ background: p.overlayColor || "#000", opacity: p.bgOverlay / 100 }}
       />
 
       {/* Vignette */}

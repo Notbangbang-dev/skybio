@@ -6,8 +6,13 @@ export interface BioProfile {
   bio: string;
   avatarUrl: string | null;
   avatarStyle: string;
+  avatarSize: number;
   location: string;
   pronouns: string;
+
+  discordEnabled: boolean;
+  discordUserId: string;
+  discordShowActivity: boolean;
 
   bgType: string;
   bgUrl: string | null;
@@ -24,6 +29,11 @@ export interface BioProfile {
   radius: number;
   cardOpacity: number;
   cardBlur: number;
+  cardWidth: number;
+  overlayColor: string;
+  glowBehindCard: boolean;
+  effectConfetti: boolean;
+  footerText: string;
 
   nameEffect: string;
   effectParticles: boolean;

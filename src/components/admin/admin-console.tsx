@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { toast, Toaster } from "sonner";
 import {
   User, Palette, Image as ImageIcon, Sparkles, Music, Link2, Globe,
-  Save, Upload, Trash2, Plus, Loader2,
+  Save, Upload, Trash2, Plus, Loader2, MessageCircle,
 } from "lucide-react";
 import {
   saveProfile, addTrack, updateTrack, deleteTrack,
@@ -22,6 +22,7 @@ export interface AdminData { profile: ProfileForm; tracks: AdminTrack[]; socials
 
 const TABS = [
   { key: "identity", label: "Identity", icon: User },
+  { key: "discord", label: "Discord", icon: MessageCircle },
   { key: "look", label: "Look", icon: Palette },
   { key: "background", label: "Background", icon: ImageIcon },
   { key: "effects", label: "Effects", icon: Sparkles },
@@ -103,7 +104,38 @@ export function AdminConsole({ data }: { data: AdminData }) {
           </Grid>
           <Area label="Bio" value={form.bio} onChange={(v) => set("bio", v)} rows={4} />
           <Text label="Badges (comma separated)" value={badgesText} onChange={setBadgesText} placeholder="developer, owner, early" />
-          <Select label="Avatar style" value={form.avatarStyle} options={[...AVATAR_STYLES]} onChange={(v) => set("avatarStyle", v)} />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Select label="Avatar style" value={form.avatarStyle} options={[...AVATAR_STYLES]} onChange={(v) => set("avatarStyle", v)} />
+            <Range label="Avatar size" value={form.avatarSize} min={64} max={200} suffix="px" onChange={(v) => set("avatarSize", v)} />
+          </div>
+        </Section>
+      )}
+
+      {tab === "discord" && (
+        <Section title="Discord presence" desc="Show your live Discord status + activity on your bio.">
+          <div className="rounded-xl border border-line bg-panel-2 p-3 text-xs text-muted">
+            Powered by <span className="font-medium text-white">Lanyard</span>. Join{" "}
+            <a href="https://discord.gg/lanyard" target="_blank" rel="noreferrer" className="underline">
+              discord.gg/lanyard
+            </a>{" "}
+            with the account below so your presence can be tracked — otherwise it shows offline.
+          </div>
+          <Toggle label="Show Discord presence" checked={form.discordEnabled} onChange={(v) => set("discordEnabled", v)} />
+          <Text
+            label="Discord user ID"
+            value={form.discordUserId}
+            onChange={(v) => set("discordUserId", v)}
+            placeholder="1226241151065919548"
+            mono
+          />
+          <p className="text-xs text-muted">
+            Enable Developer Mode in Discord → right-click your name → Copy User ID.
+          </p>
+          <Toggle
+            label="Show current activity (Spotify / game / custom status)"
+            checked={form.discordShowActivity}
+            onChange={(v) => set("discordShowActivity", v)}
+          />
         </Section>
       )}
 
@@ -121,6 +153,7 @@ export function AdminConsole({ data }: { data: AdminData }) {
             <Select label="Name effect" value={form.nameEffect} options={[...NAME_EFFECTS]} onChange={(v) => set("nameEffect", v)} />
           </Grid>
           <Range label="Corner radius" value={form.radius} min={0} max={60} suffix="px" onChange={(v) => set("radius", v)} />
+          <Range label="Card width" value={form.cardWidth} min={320} max={640} suffix="px" onChange={(v) => set("cardWidth", v)} />
           <Range label="Card glass opacity" value={form.cardOpacity} min={0} max={100} suffix="%" onChange={(v) => set("cardOpacity", v)} />
           <Range label="Card blur" value={form.cardBlur} min={0} max={60} suffix="px" onChange={(v) => set("cardBlur", v)} />
         </Section>
@@ -146,7 +179,10 @@ export function AdminConsole({ data }: { data: AdminData }) {
           )}
           <Range label="Media brightness" value={form.bgBrightness} min={0} max={200} suffix="%" onChange={(v) => set("bgBrightness", v)} />
           <Range label="Media blur" value={form.bgBlur} min={0} max={60} suffix="px" onChange={(v) => set("bgBlur", v)} />
-          <Range label="Dark overlay" value={form.bgOverlay} min={0} max={100} suffix="%" onChange={(v) => set("bgOverlay", v)} />
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Color label="Overlay color" value={form.overlayColor} onChange={(v) => set("overlayColor", v)} />
+            <Range label="Overlay strength" value={form.bgOverlay} min={0} max={100} suffix="%" onChange={(v) => set("bgOverlay", v)} />
+          </div>
         </Section>
       )}
 
@@ -163,6 +199,8 @@ export function AdminConsole({ data }: { data: AdminData }) {
             <Toggle label="Cursor trail" checked={form.effectCursor} onChange={(v) => set("effectCursor", v)} />
             <Toggle label="Card tilt" checked={form.effectTilt} onChange={(v) => set("effectTilt", v)} />
             <Toggle label="Film grain" checked={form.effectGrain} onChange={(v) => set("effectGrain", v)} />
+            <Toggle label="Glow behind card" checked={form.glowBehindCard} onChange={(v) => set("glowBehindCard", v)} />
+            <Toggle label="Confetti on enter" checked={form.effectConfetti} onChange={(v) => set("effectConfetti", v)} />
           </div>
           <Color label="Particle color" value={form.particleColor} onChange={(v) => set("particleColor", v)} />
           <Range label="Particle density" value={form.particleDensity} min={0} max={100} suffix="%" onChange={(v) => set("particleDensity", v)} />
@@ -200,6 +238,7 @@ export function AdminConsole({ data }: { data: AdminData }) {
             <Text label="…or favicon URL" value={form.faviconUrl} onChange={(v) => set("faviconUrl", v)} placeholder="https://…" grow />
           </div>
           <Toggle label="Show view counter" checked={form.showViews} onChange={(v) => set("showViews", v)} />
+          <Text label="Footer text" value={form.footerText} onChange={(v) => set("footerText", v)} placeholder="made with ♥" />
         </Section>
       )}
 

@@ -77,8 +77,14 @@ model Profile {
   bio         String  @default("welcome to my corner of the internet ✦") @db.Text
   avatarUrl   String?
   avatarStyle String  @default("glow") // glow | ring | pulse | plain
+  avatarSize  Int     @default(112) // px
   location    String  @default("")
   pronouns    String  @default("")
+
+  // Live Discord presence via Lanyard (join discord.gg/lanyard to be tracked).
+  discordEnabled      Boolean @default(false)
+  discordUserId       String  @default("")
+  discordShowActivity Boolean @default(true) // show Spotify / playing / custom status
 
   // Background
   bgType       String  @default("gradient") // gradient | image | gif | video | color
@@ -97,6 +103,11 @@ model Profile {
   radius      Int    @default(28)  // px
   cardOpacity Int    @default(50)  // glass fill %
   cardBlur    Int    @default(22)  // px
+  cardWidth   Int    @default(448) // px
+  overlayColor   String  @default("#000000") // background scrim color
+  glowBehindCard Boolean @default(true)
+  effectConfetti Boolean @default(false) // confetti burst on enter
+  footerText     String  @default("")
 
   // Effects
   nameEffect      String  @default("shine") // shine | glitch | typewriter | none
