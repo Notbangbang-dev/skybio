@@ -30,15 +30,13 @@ function resolveAuthSecret(): string {
 }
 
 // Discord user id(s) that own this bio (the only accounts that can open /admin).
-// Read from BOOTSTRAP_ADMIN_DISCORD_IDS; a built-in default is included and can
-// be cleared by setting DEFAULT_OWNER_DISCORD_IDS="" .
-const DEFAULT_OWNER_DISCORD_IDS = (() => {
-  const override = optional("DEFAULT_OWNER_DISCORD_IDS");
-  if (override !== undefined) {
-    return override.split(",").map((s) => s.trim()).filter(Boolean);
-  }
-  return ["1226241151065919548"];
-})();
+// There is intentionally NO hard-coded default — the deployer MUST set their own
+// id via BOOTSTRAP_ADMIN_DISCORD_IDS (or DEFAULT_OWNER_DISCORD_IDS), so no baked-in
+// account can ever gain owner access on someone else's deployment.
+const DEFAULT_OWNER_DISCORD_IDS = (optional("DEFAULT_OWNER_DISCORD_IDS") ?? "")
+  .split(",")
+  .map((s) => s.trim())
+  .filter(Boolean);
 
 export const env = {
   DATABASE_URL: process.env.DATABASE_URL ?? "",
@@ -65,9 +63,11 @@ export const env = {
   ),
 
   UPLOAD_DIR: optional("UPLOAD_DIR") ?? "uploads",
+  // Capped at 200 MB to stay at/under the nginx client_max_body_size (200m) so
+  // the two limits can't drift into confusing edge 413s.
   MAX_UPLOAD_MB: (() => {
     const n = Number(optional("MAX_UPLOAD_MB") ?? "100");
-    return Number.isFinite(n) && n > 0 ? Math.min(n, 500) : 100;
+    return Number.isFinite(n) && n > 0 ? Math.min(n, 200) : 100;
   })(),
 
   TRUST_CLOUDFLARE: boolEnv("TRUST_CLOUDFLARE"),

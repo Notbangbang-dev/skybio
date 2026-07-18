@@ -129,9 +129,11 @@ export function resolveUploadPath(segments: string[]): string | null {
   return target;
 }
 
-export async function readUpload(target: string): Promise<Buffer | null> {
+/** File size in bytes, or null if it doesn't exist / isn't a regular file. */
+export async function uploadSize(target: string): Promise<number | null> {
   try {
-    return await fs.readFile(target);
+    const st = await fs.stat(target);
+    return st.isFile() ? st.size : null;
   } catch {
     return null;
   }

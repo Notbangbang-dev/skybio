@@ -106,8 +106,8 @@ and firewall the origin to Cloudflare's IP ranges.
 
 ## Notes
 
-- Big backgrounds/music: nginx `client_max_body_size` is 150m and the app's
-  `MAX_UPLOAD_MB` caps individual files — keep them in sync.
+- Big backgrounds/music: nginx `client_max_body_size` is 200m and the app caps
+  `MAX_UPLOAD_MB` at 200 to match, so the two limits can't drift.
 - The bio page and admin are server-rendered on demand (they read the DB live), so
   edits appear immediately after you save.
 ```

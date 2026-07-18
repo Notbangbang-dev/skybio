@@ -50,6 +50,7 @@ grep -Eq 'DOMAIN="?(your-domain\.com|example\.com)"?' .env       && missing="$mi
 grep -Eq 'LETSENCRYPT_EMAIL="?admin@(your-domain\.com|example\.com)"?' .env && missing="$missing LETSENCRYPT_EMAIL"
 grep -q 'your-discord-client-id' .env                            && missing="$missing AUTH_DISCORD_ID"
 grep -q 'your-discord-client-secret' .env                        && missing="$missing AUTH_DISCORD_SECRET"
+grep -Eq 'BOOTSTRAP_ADMIN_DISCORD_IDS="(your-discord-user-id)?"' .env && missing="$missing BOOTSTRAP_ADMIN_DISCORD_IDS(your-id)"
 
 if [ -n "$missing" ]; then
   cat <<EOF

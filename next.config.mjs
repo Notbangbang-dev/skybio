@@ -14,6 +14,24 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   async headers() {
+    // The bio intentionally renders owner-chosen media from arbitrary https hosts
+    // (img/video/audio), plus Google Fonts. Next's runtime needs inline scripts,
+    // so script-src includes 'unsafe-inline' (no nonce wiring). This CSP is a
+    // defense-in-depth backstop, not the primary control (there's no injection
+    // sink — user URLs/colors/fonts are sanitized/allow-listed server-side).
+    const csp = [
+      "default-src 'self'",
+      "img-src 'self' https: data: blob:",
+      "media-src 'self' https: data: blob:",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+      "font-src 'self' https://fonts.gstatic.com data:",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      "connect-src 'self'",
+      "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "object-src 'none'",
+      "form-action 'self'",
+    ].join("; ");
     return [
       {
         source: "/:path*",
@@ -21,6 +39,7 @@ const nextConfig = {
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           { key: "X-DNS-Prefetch-Control", value: "off" },
+          { key: "Content-Security-Policy", value: csp },
           {
             key: "Permissions-Policy",
             value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
