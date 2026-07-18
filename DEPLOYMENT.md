@@ -10,7 +10,7 @@ serves the public bio and the owner admin; nginx terminates TLS and proxies to i
 On a fresh Ubuntu 22.04 / 24.04 server with a domain's A record pointed at it:
 
 ```bash
-cd /opt && git clone <your-fork-url> skybio
+cd /opt && git clone https://github.com/Notbangbang-dev/skybio.git skybio
 cd skybio
 sudo ./install.sh     # installs Docker + firewall, creates .env, generates secrets
 nano .env             # set DOMAIN, LETSENCRYPT_EMAIL, Discord creds, owner id

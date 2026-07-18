@@ -56,7 +56,7 @@ smooth and light.
 Fresh Ubuntu 22.04 / 24.04 box with a domain pointed at it:
 
 ```bash
-git clone <your-fork-url> skybio && cd skybio
+git clone https://github.com/Notbangbang-dev/skybio.git skybio && cd skybio
 sudo ./install.sh          # installs Docker + firewall, creates .env, generates secrets
 nano .env                  # set DOMAIN, LETSENCRYPT_EMAIL, Discord creds,
                            #   and BOOTSTRAP_ADMIN_DISCORD_IDS = YOUR Discord user id
