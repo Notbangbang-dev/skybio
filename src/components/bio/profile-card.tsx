@@ -37,7 +37,8 @@ export function ProfileCard({
       ref={ref}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
-      className="glass conic-border animate-scale-in relative w-full max-w-md rounded-[var(--radius)] p-8 transition-transform duration-200 ease-out will-change-transform"
+      className="glass animate-scale-in relative w-full max-w-md rounded-[var(--radius)] p-8 transition-transform duration-200 ease-out will-change-transform"
+      style={{ borderColor: "color-mix(in srgb, var(--accent) 28%, transparent)" }}
     >
       <div className="stagger flex flex-col items-center text-center">
         {/* Avatar */}
