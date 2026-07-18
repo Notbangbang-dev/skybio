@@ -1,0 +1,158 @@
+// skybio — Prisma schema
+// A single-owner bio site. The public page renders the `Profile` singleton plus
+// its Tracks and SocialLinks; the owner (Discord-gated) edits everything.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────
+//  Auth.js (NextAuth) models
+// ─────────────────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  discordId     String?   @unique
+  role          String    @default("USER") // "USER" | "OWNER"
+  createdAt     DateTime  @default(now())
+
+  accounts Account[]
+  sessions Session[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─────────────────────────────────────────────────────────────
+//  The bio configuration (single row, id = "singleton")
+// ─────────────────────────────────────────────────────────────
+
+model Profile {
+  id String @id @default("singleton")
+
+  // Identity
+  displayName String  @default("your name")
+  username    String  @default("user")
+  bio         String  @default("welcome to my corner of the internet ✦") @db.Text
+  avatarUrl   String?
+  avatarStyle String  @default("glow") // glow | ring | pulse | plain
+  location    String  @default("")
+  pronouns    String  @default("")
+
+  // Background
+  bgType       String  @default("gradient") // gradient | image | gif | video | color
+  bgUrl        String?
+  bgColor      String  @default("#05060a")
+  bgBlur       Int     @default(0)   // px
+  bgBrightness Int     @default(65)  // %
+  bgOverlay    Int     @default(45)  // dark scrim opacity %
+
+  // Theme
+  accent      String @default("#8b5cf6")
+  accent2     String @default("#22d3ee")
+  textColor   String @default("#f5f5fb")
+  displayFont String @default("Unbounded")
+  bodyFont    String @default("Sora")
+  radius      Int    @default(28)  // px
+  cardOpacity Int    @default(50)  // glass fill %
+  cardBlur    Int    @default(22)  // px
+
+  // Effects
+  nameEffect      String  @default("shine") // shine | glitch | typewriter | none
+  effectParticles Boolean @default(true)
+  effectStars     Boolean @default(true)
+  effectCursor    Boolean @default(true)
+  effectRain      Boolean @default(false)
+  effectTilt      Boolean @default(true)
+  effectGrain     Boolean @default(true)
+  particleColor   String  @default("#8b5cf6")
+  particleDensity Int     @default(60) // 0-100
+
+  // Splash / enter gate
+  splashEnabled Boolean @default(true)
+  enterText     String  @default("click to enter")
+
+  // Audio
+  musicEnabled   Boolean @default(true)
+  autoplay       Boolean @default(true)
+  volume         Int     @default(45) // 0-100
+  showVisualizer Boolean @default(true)
+  loopTracks     Boolean @default(true)
+
+  // Meta / embed (link previews)
+  siteTitle       String  @default("bio")
+  metaDescription String  @default("")
+  faviconUrl      String?
+  embedColor      String  @default("#8b5cf6")
+
+  // Misc
+  showViews Boolean  @default(true)
+  views     Int      @default(0)
+  badges    String[] @default([])
+
+  updatedAt DateTime @updatedAt
+}
+
+model Track {
+  id        String   @id @default(cuid())
+  title     String
+  artist    String   @default("")
+  url       String
+  coverUrl  String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([sortOrder])
+}
+
+model SocialLink {
+  id        String   @id @default(cuid())
+  platform  String // discord | github | twitter | instagram | youtube | tiktok | spotify | twitch | email | website | custom
+  label     String   @default("")
+  url       String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([sortOrder])
+}
