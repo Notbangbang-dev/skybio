@@ -11,9 +11,17 @@ const WINDOW_MS = 60_000;
 const seen = new Map<string, number>();
 
 function clientIp(req: NextRequest): string {
+  // Prefer X-Real-IP: nginx OVERWRITES it with $remote_addr, so a client can't
+  // forge it through the proxy. X-Forwarded-For is client-spoofable at the FIRST
+  // token (nginx only appends the real hop at the END), so never trust its head.
+  const real = req.headers.get("x-real-ip");
+  if (real) return real.trim();
   const xff = req.headers.get("x-forwarded-for");
-  if (xff) return xff.split(",")[0].trim();
-  return req.headers.get("x-real-ip") ?? "unknown";
+  if (xff) {
+    const parts = xff.split(",").map((s) => s.trim()).filter(Boolean);
+    if (parts.length) return parts[parts.length - 1];
+  }
+  return "unknown";
 }
 
 /** Increment the public view counter (throttled). Best-effort; never throws. */

@@ -202,8 +202,10 @@ export async function saveProfile(input: ProfileInput): Promise<Result> {
     });
     revalidateAll();
     return { ok: true };
-  } catch (err: any) {
-    return { ok: false, error: err?.message ?? "Failed to save" };
+  } catch (err) {
+    // Don't leak internal (e.g. Prisma) error detail to the client.
+    console.error("[saveProfile] failed:", err);
+    return { ok: false, error: "Failed to save. Please try again." };
   }
 }
 
