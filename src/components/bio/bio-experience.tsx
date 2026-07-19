@@ -58,7 +58,7 @@ export function BioExperience({
 
   return (
     <main
-      className="relative min-h-screen w-full font-sans"
+      className="min-h-dscreen relative w-full font-sans"
       style={{ ...themeStyle(p), color: "var(--text-color)" }}
     >
       <Background p={p} />
@@ -73,8 +73,12 @@ export function BioExperience({
       {p.effectCursor && <CursorTrail color={p.accent} />}
       {p.effectGrain && <div className="grain-overlay" aria-hidden />}
 
-      {/* Center stage */}
-      <div className="relative z-10 grid min-h-screen place-items-center px-4 py-10 sm:py-16">
+      {/* Center stage — extra bottom room so content clears the floating player. */}
+      <div
+        className={`min-h-dscreen relative z-10 grid place-items-center px-4 pt-10 sm:pt-16 ${
+          p.musicEnabled && tracks.length > 0 ? "pb-28 sm:pb-24" : "pb-10 sm:pb-16"
+        }`}
+      >
         <div className="relative">
           {p.glowBehindCard && (
             <div

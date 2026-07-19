@@ -10,7 +10,7 @@ export default async function LoginPage() {
   if (session?.user) redirect("/admin");
 
   return (
-    <div className="admin-scope grid min-h-screen place-items-center px-4">
+    <div className="admin-scope min-h-dscreen grid place-items-center px-4">
       <div className="glass w-full max-w-sm rounded-3xl p-8 text-center" style={{ ["--card-opacity" as string]: "0.6" }}>
         <div className="mx-auto mb-5 grid h-14 w-14 place-items-center rounded-2xl" style={{ background: "linear-gradient(135deg,#8b5cf6,#22d3ee)" }}>
           <span className="text-2xl">✦</span>

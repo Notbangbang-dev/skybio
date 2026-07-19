@@ -33,7 +33,7 @@ export default async function DonatePage() {
 
   return (
     <main
-      className="relative grid min-h-screen place-items-center overflow-hidden px-4 py-16 font-sans"
+      className="min-h-dscreen relative grid place-items-center overflow-hidden px-4 py-20 font-sans"
       style={{ ...themeVars(p), color: "var(--text-color)", background: "var(--bg-color)" }}
     >
       {/* atmospheric backdrop matching the bio theme */}

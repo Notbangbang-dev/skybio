@@ -30,11 +30,24 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
+  width: 100%;
+  /* Never allow decorative/fixed layers to create a horizontal scrollbar on mobile. */
+  overflow-x: hidden;
+  /* Stop iOS from auto-inflating text in landscape. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   background: var(--bg-color);
   color: var(--text-color);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* Full-height helper that respects the mobile dynamic viewport (URL-bar aware),
+   with a 100vh fallback for browsers without dvh support. */
+.min-h-dscreen {
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 ::selection {
   background: var(--accent);
@@ -357,4 +370,5 @@ body {
     hsl(240 12% 5%);
   color: hsl(240 20% 96%);
   min-height: 100vh;
+  min-height: 100dvh;
 }

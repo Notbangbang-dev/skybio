@@ -51,7 +51,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export async function generateViewport(): Promise<Viewport> {
   const p = await safeProfile();
-  return { themeColor: p?.embedColor || "#8b5cf6" };
+  return {
+    width: "device-width",
+    initialScale: 1,
+    // Allow pinch-zoom (accessibility) but don't zoom in on input focus.
+    maximumScale: 5,
+    themeColor: p?.embedColor || "#8b5cf6",
+  };
 }
 
 export default function RootLayout({
